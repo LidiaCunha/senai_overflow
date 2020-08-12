@@ -10,10 +10,12 @@ const conexao = new Sequelize(dbConfig);
 //Inicializando os models
 Aluno.init(conexao);
 Postagem.init(conexao);
+Comentario.init(conexao);
 
 //Inicializando as associações
 Aluno.associate(conexao.models);
 Postagem.associate(conexao.models);
+Comentario.associate(conexao.models);
 
 //exportamos a conexão
 module.exports = conexao;

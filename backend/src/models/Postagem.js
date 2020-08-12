@@ -11,13 +11,14 @@ class Postagem extends Model {
             },
             {
                 sequelize,
-                modelName: "postagens",
+                tableName: "postagens",
             }
         );
     }
 
     static associate(models) {
         this.belongsTo(models.Aluno);
+        this.hasMany(models.Comentario);
     }
 }
 

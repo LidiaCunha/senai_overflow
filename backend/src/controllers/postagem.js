@@ -5,20 +5,35 @@ module.exports = {
     async  store(req, res){
         const token = req.headers.authorization;
 
-        const [Bearer, created_aluno_id] = token.split("");
-
-        // return res.send(created_aluno_id);
+        const [Bearer, created_aluno_id] = token.split(" ");
 
         const {titulo, descricao, imagem, gists} = req.body;
+        
+        try {
+            
+            const aluno = Aluno.findByPk(created_aluno_id);
 
-        let post = await Postagem.create({
-            titulo,
-            descricao,
-            imagem,
-            gists
-        });
+            if (!aluno) {
+                res.status(404).send("Aluno não encontrado!");
+            }
 
-        res.send(201).send(post);
+            let post = await aluno.createPostagem({
+                titulo,
+                descricao,
+                imagem,
+                gists,
+                created_aluno_id
+            });
+
+            res.status(201).send(post);
+            
+        } catch (error) {
+            return res
+            .status(500)
+            .send({
+                error: "Não foi possível adicionar a postagem, tente novamento mais tarde."
+            });
+        }
     },
 
     async delete(req, res){
